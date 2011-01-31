@@ -1,0 +1,63 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=3434
+
+IniParser provides a function for parsing ini files. The following is a short
+example of how to use this function.
+
+Assuming you have an ini file in the current directory, whose name is
+"planets.ini" with the following content:
+=======================
+[Venus]
+mass=4.86900e24 kg
+radius=6051.8 km
+satellites=0
+
+[Earth]
+mass=5.9742e24 kg
+radius=6378.1 km
+satellites=1
+
+[Mars]
+radius=3397 km
+mass=0.64191e24 kg
+satellites=2
+=======================
+
+Now we want to know the mass of Mars and the radius of the Earth by vimscript.
+First we need to parse the file by calling IniParser#Read:
+
+ let ini_result = IniParser#Read('./planets.ini')
+
+
+Then the following two lines shows the mass of Mars and the radius of the
+Earth respectively:
+
+ echo ini_result['Mars']['mass']
+ echo ini_result['Earth']['radius']
+
+
+Here's a little explanation:
+The information of the ini file would be stored in the variable "ini_result".
+"ini_result" is a dictionary, whose key names are the group names and whose
+values are also dictionaries whose key names are entry names and whose values
+are the values of the corresponding keys. If you don't understand it, don't
+worry, use the following line to show it:
+
+ echo ini_result
+
+
+Here's the result:
+
+ {'Earth': {'mass': '5.9742e24 kg', 'radius': '6378.1 km', 'satellites': '1'}, 'Venus': {'mass': '4.86900e24 kg', 'radius': '6051.8 km', 'satellites': '0'}, 'Mars': {'mass': '0.64191e24 kg', 'radius': '3397 km', 'satellites': '2'}}
+
+
+If you're familiar with the dictionary of vimscript, you may understand now.
+
+If you find any bug, please report it to xuhdev@gmail.com or submit it on
+the issue tracker:
+https://bitbucket.org/xuhdev/iniparser/issues 
+
+Repository:
+https://bitbucket.org/xuhdev/iniparser
+
+Follow xuhdev on twitter if you are interested in my development:
+http://twitter.com/xuhdev
