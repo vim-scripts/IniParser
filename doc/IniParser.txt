@@ -1,9 +1,9 @@
 *IniParser.txt*
 
 File: doc/IniParser.txt
-Version: 0.1
+Version: 0.1.1
 Author: H Xu(xuhdev AT gmail DOT com)
-Last Change: 31 January, 2011
+Last Change: 2 February, 2011
 Description: This plugin provides a function for parsing ini files.
 License: You can redistribute this plugin and/or modify it under the terms 
          of the GNU General Public License as published by the Free Software 
@@ -51,8 +51,8 @@ First we need to parse the file by calling IniParser#Read:
 Then the following two lines shows the mass of Mars and the radius of the
 Earth respectively:
 >
- echo ini_result['Mars']['radius']
- echo ini_result['Earth']['mass']
+ echo ini_result['Mars']['mass']
+ echo ini_result['Earth']['radius']
 <
 
 Here's a little explanation:
@@ -91,10 +91,10 @@ which is to be parsed, which is something similar to the return value of
 |readfile|.
 
 Return value:
-The return value is a dictionary which stores the result of the parsing
-result. The dictionary's key names are the group names and its values are also
-dictionaries, which stores the key-value pairs in the ini file. For example,
-the following ini file:
+If no error occurs, the return value is a dictionary which stores the result
+of the parsing result. The dictionary's key names are the group names and its
+values are also dictionaries, which stores the key-value pairs in the ini
+file. For example, the following ini file:
 =======================
 [Venus]
 mass=4.86900e24 kg
@@ -144,6 +144,13 @@ Or we could see it in another way:
 <
 Now you may find that this structure is very familiar to the original ini
 file. Also see |IniParser-overview|.
+
+But if there is some error occuring, the result would be a number which
+indicates what error it is. Here is the error number list:
+0-------The ini file contains a syntax error;
+1-------The ini file is not readable;
+2-------The argument type is neither a string nor a list.
+
 
                                             *IniParser#GetVersion*
 >
