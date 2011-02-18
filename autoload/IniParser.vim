@@ -1,5 +1,5 @@
 " File: autoload/IniParser.vim
-" version 0.1.1
+" version 0.2
 " See doc/IniParser.txt for more information.
 
 let s:saved_cpo = &cpo
@@ -10,7 +10,7 @@ function! IniParser#GetVersion() " {{{1
     " example, version 0.1 is corresponding to 10, version 2.3 is
     " corresponding to 230
 
-    return 11
+    return 20
 endfunction
 
 " utils {{{1
@@ -172,9 +172,63 @@ function! IniParser#Read(arg) " {{{1
     return l:result_dic
 endfunction
 
+function! s:WriteToList(ini_sub_dict, prefix) " {{{1
+
+    let l:ret_list = []
+
+    for key in keys(a:ini_sub_dict)
+        let l:value = a:ini_sub_dict[key]
+
+        if type(l:value) == type({})
+            call extend(l:ret_list, s:WriteToList(l:value, prefix.key.'/'))
+        elseif type(l:value) == type('')
+            call add(l:ret_list, a:prefix.key.'='.l:value)
+        endif
+    endfor
+
+    return l:ret_list
+endfunction
+
+function! IniParser#Write(ini_dict, ...) " {{{1
+    " write to ini file, the first argument is a dict, whose format is the
+    " same with the return value of IniParser#Read; if the second argument is
+    " provided, it should be the ini file name which we want to write to, and
+    " the function will try to write to the file. If the second argument is
+    " not provided, then the function will not write anything to file. If any
+    " error occured, the return value is a number. If the function succeeds,
+    " the return value is a list containing the content of the ini file. The
+    " format of the list is the same as the list argument of the function
+    " writefile().
+
+    if type(a:ini_dict) != type({})
+        return 1
+    endif
+
+    let l:ini_list = []
+
+    " write to the list
+    for key in keys(a:ini_dict)
+        call add(l:ini_list, '['.key.']')
+        let l:value = a:ini_dict[key]
+
+        if type(l:value) == type({})
+            call extend(l:ini_list, s:WriteToList(l:value, ''))
+        endif
+    endfor
+
+    " write to the file if the second parameter is given
+    if a:0 == 1 && type(a:1) == type('')
+        if writefile(l:ini_list, a:1) == -1
+            return 2
+        endif
+    endif
+
+    return l:ini_list
+endfunction
+
 " }}}
 
 let &cpo = s:saved_cpo
 unlet! s:saved_cpo
 
-" vim: fdm=marker et ts=4 tw=78 sw=4 fdc=1
+" vim: fdm=marker et ts=4 tw=78 sw=4 fdc=3
