@@ -1,9 +1,9 @@
 *IniParser.txt*
 
 File: doc/IniParser.txt
-Version: 0.2.1
+Version: 0.2.2
 Author: H Xu(xuhdev AT gmail DOT com)
-Last Change: 12 October, 2011
+Last Change: 16 October, 2011
 Description: This plugin provides a function for parsing ini files.
 License: You can redistribute this plugin and/or modify it under the terms 
          of the GNU General Public License as published by the Free Software 
